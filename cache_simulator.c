@@ -6,7 +6,7 @@
 
 int main(int argc, char const *argv[]){
   
-	int nsets, bsize, assoc, flag_saida,dado;
+	int nsets, bsize, assoc, flag_saida,dado,maisvariavel;
 	char *subs; 
 	FILE *entrada;
 	nsets = atoi (argv[1]);
