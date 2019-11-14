@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 const int MAX = 1000;
-
+unsigned int lido;
 /*
 nsets = numero de conjuntos
 bsize = tamanho do bloco
@@ -14,7 +14,7 @@ flag_ = flag de saida
 
 int main(int argc, char const *argv[]){
   
-	int nsets, bsize, assoc, flag_saida,dados[MAX],k=0,tag,i,j;
+	int nsets, bsize, assoc, flag_saida,dados[MAX],k=0,tag,i=0,j, tam=0;
 	char *subs,file[15]; 
 	FILE *entrada;
 	//atribuições iniciais
@@ -23,13 +23,27 @@ int main(int argc, char const *argv[]){
 	assoc = atoi (argv[3]);
 	subs = argv [4];
 	flag_saida = atoi (argv [5]); 
-	//copiando nome do arquivo para uma string
+	
 	entrada = fopen(argv[6],"rb");
 	
-	// leitura até o final do arquivo, menor que o máximo
+	if(entrada == NULL) {
+        printf("Problemas com a leitura do arquivo. \n");
+        return 1;
+    }
 
-	k = fread(&dados[0],sizeof(int),MAX,entrada);
-	i = nsets/assoc;
+    while (!feof(entrada)) {
+        fread(&lido, sizeof(unsigned int), 1, entrada);
+        dados[tam] = __builtin_bswap32(lido);
+        tam++;
+    }
+
+     for(i=0; i<tam-1; i++) {
+         printf("%u\n", dados[i]);
+     }
+
+
+	
+	 /*= nsets/assoc;*/
 	j = assoc;
 
 	int matriz[i][j];
