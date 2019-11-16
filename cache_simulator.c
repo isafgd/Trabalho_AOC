@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <conio.h>
 
-const int MAX = 1000;
+const int MAX = 10000;
 unsigned int lido;
 /*
 nsets = numero de conjuntos
@@ -15,7 +15,9 @@ flag_ = flag de saida
 
 int main(int argc, char const *argv[]){
   
-	int nsets, bsize, assoc, flag_saida,dados[MAX],k, indice,i=0,j, tam=0, cont=0,random,hit=0,missConf=0,missCap=0,missComp=0;
+	int nsets, bsize, assoc, flag_saida,dados[MAX],k, indice,i=0,j, tam=0, cont=0,random;
+	float hit=0,missConf=0,missCap=0,missComp=0;
+	float txHit, txMiss, txComp, txCap, txConf;
 	char *subs,file[15];
 	FILE *entrada;
 	//atribuições iniciais
@@ -37,7 +39,8 @@ int main(int argc, char const *argv[]){
         dados[tam] = __builtin_bswap32(lido);
         tam++;
     }
-	printf("\n%d\n",tam);
+	
+	tam--;
 	k = nsets/assoc;
 	j = assoc;
 
@@ -59,14 +62,24 @@ int main(int argc, char const *argv[]){
 				else {
 					if(matriz[indice][i] == -1){
 						matriz[indice][i] = dados[t];
+						missComp++;
 						break;
 					}
 					else{
-						if(cont == j){
+						if(cont == j-1){
 							random = rand() % j;
 							matriz[indice][random] = dados[t];
-							missCap++;
-							missConf;
+
+							if (j==1)
+								missConf++;
+							else {
+								if  (k==1)
+									missCap++;
+								else{
+									missCap++;
+									missConf++;
+								}
+							}
 						}
 						else
 							cont++;
@@ -76,14 +89,17 @@ int main(int argc, char const *argv[]){
 			}
 		 }
 
-	 for (int i = 0; i < k; ++i)
-	 {
-	 	printf("\n");
-	 	for (int t = 0; t < j; ++t)
-	 	{
-	 		printf("%d ",matriz[i][t]);
-	 	}
-	 }
+	int missTotal = missCap + missConf + missComp;
+	txHit = hit/tam;
+	txMiss = 1 - txHit;
+	txCap = missCap/missTotal;
+	txComp = missComp/missTotal;
+	txConf = missConf/missTotal;
+
+	if (flag_saida == 0)
+		printf ("Número total de acessos: %d\nTaxa de hits: %.2f\nTaxa de miss: %.2f\nTaxa de miss compulsório: %.2f\nTaxa de miss de capacidade: %.2f\nTaxa de miss de conflito: %.2f\n", tam, txHit, txMiss, txComp, txCap, txConf);
+	else 
+		printf ("%d, %.2f, %.2f, %.2f, %.2f, %.2f", tam, txHit, txMiss, txComp,  txCap, txConf);
 
 	return 0;
 }
