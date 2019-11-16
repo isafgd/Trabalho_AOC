@@ -16,7 +16,7 @@ flag_ = flag de saida
 int main(int argc, char const *argv[]){
   
 	int nsets, bsize, assoc, flag_saida,dados[MAX],k, indice,i=0,j, tam=0, cont=0,random,hit=0,missConf=0,missCap=0,missComp=0;
-	char *subs,file[15]; 
+	char *subs,file[15];
 	FILE *entrada;
 	//atribuições iniciais
 	nsets = atoi (argv[1]);
@@ -37,49 +37,53 @@ int main(int argc, char const *argv[]){
         dados[tam] = __builtin_bswap32(lido);
         tam++;
     }
-	
+	printf("\n%d\n",tam);
 	k = nsets/assoc;
 	j = assoc;
 
 	int matriz[k][j];
 	
-	for(i=0; i<= k ;i++){
-		for(int t=0;t<=j;t++){
-			matriz[i][j] = -1;
+	for(i=0; i < k ;i++){
+		for(int t=0;t < j;t++){
+			matriz[i][t] = -1;
 		}
 	}
-	
-	for (int t = 0; t < tam ; ++t)
-	{
-		indice = dados[t]%k;
-		for (int m = 0; m < j; ++m)
-		{
-			if(matriz[indice][m] == dados[t]){
-			hit++;
-			break;
-			}
-		}
-		for (i=0;i<j;i++){
-			if (matriz[indice][i] == -1 || matriz[indice][i] == dados[t]){
-				if (matriz[indice][i]==-1)
-				{
-					matriz[indice][i] = dados[t];
-					missComp++;
-				}
-				matriz[indice][i] = dados[t];
-
-				break;
-			}
-			else {
-				if(cont == j){
+		for (int t = 0; t < tam ; ++t){
+			cont = 0;
+			indice = dados[t]%k;
+			for (i=0;i<j;i++){
+				if (matriz[indice][i] == dados[t]){
+						hit++;
+						break;
+					}
+				else {
+					if(matriz[indice][i] == -1){
+						matriz[indice][i] = dados[t];
+						break;
+					}
+					else{
+						if(cont == j){
+							random = rand() % j;
+							matriz[indice][random] = dados[t];
+							missCap++;
+							missConf;
+						}
+						else
+							cont++;
 					}
 				}
-				else
-					cont++;
+					
 			}
-		}
-		
-	} 
-  	
+		 }
+
+	 for (int i = 0; i < k; ++i)
+	 {
+	 	printf("\n");
+	 	for (int t = 0; t < j; ++t)
+	 	{
+	 		printf("%d ",matriz[i][t]);
+	 	}
+	 }
+
 	return 0;
 }
